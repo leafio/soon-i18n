@@ -1,0 +1,16 @@
+.app {
+  background-color: lightblue;
+}
+.card {
+  padding: 1em;
+}
+.lang-switch {
+background-color: lightpink;
+text-align: right;
+}
+.content {
+background-color: aquamarine;
+}
+.state {
+background-color: darksalmon;
+}
