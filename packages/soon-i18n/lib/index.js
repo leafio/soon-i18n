@@ -4,7 +4,7 @@ const i = (e) => {
   return (t, ...n) => u(a, t, ...n);
 }, j = (e, a = {}) => {
   let t = e.lang ?? "";
-  const n = e.fallbacks, c = {};
+  const n = e.fallbacks ?? [], c = {};
   return g(a, c), {
     tLocales: (s = {}) => {
       const o = {};

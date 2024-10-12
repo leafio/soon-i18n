@@ -21,12 +21,12 @@ export const createI18n = <Lang extends string,
     GlobalLocale extends Record<string, any> | undefined>(
         config: {
             lang?: Lang;
-            fallbacks: Lang[];
+            fallbacks?: Lang[];
         },
         globalLocales: Partial<Record<Lang, GlobalLocale>> = {}
     ) => {
     let _lang = config.lang ?? "";
-    const _fallback_langs = config.fallbacks;
+    const _fallback_langs = config.fallbacks??[];
     const global_locales: Partial<Record<Lang, any>> = {};
     loadSyncLocales(globalLocales, global_locales);
     const getLang = () => {

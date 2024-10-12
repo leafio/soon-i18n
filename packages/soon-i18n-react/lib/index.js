@@ -1,80 +1,89 @@
-import { useState as L, useEffect as I, useRef as O } from "react";
-import { loadSyncLocales as p, loadLocale as k, flatTreeKey as h, formatObjKey as E } from "soon-i18n-common";
-const v = (y, g = {}) => {
-  const i = y.fallbacks, K = {}, r = {};
-  p(g, r);
-  let n = y.lang ?? "", d = 0;
-  const a = [], j = () => {
-    d++, a.forEach((e) => {
-      e(d);
+import { useState as k, useEffect as g, useRef as h, useCallback as R } from "react";
+import { loadSyncLocales as b, loadLocale as m, flatTreeKey as K, formatObjKey as x } from "soon-i18n-common";
+const z = (L, p = {}) => {
+  const i = L.fallbacks ?? [], E = {}, u = {};
+  b(p, u);
+  let a = L.lang ?? "";
+  const o = [], j = () => {
+    o.forEach((t) => {
+      t();
     });
-  }, m = (e) => {
-    n = e, a.forEach((c) => {
-      c(e);
+  }, y = (t) => {
+    a = t, o.forEach((e) => {
+      e(t), e();
     });
-  }, x = () => n, _ = () => {
-    const [e, c] = L(n), [l, u] = L(d);
-    return I(() => {
-      const t = (s) => {
-        typeof s == "number" ? u(s) : c(s);
+  }, I = () => a, O = () => {
+    const [t, e] = k(a);
+    return g(() => {
+      const n = (c) => {
+        c && e(c);
       };
-      return a.push(t), () => {
-        const s = a.findIndex((f) => f === t);
-        a.splice(s, 1);
+      return o.push(n), () => {
+        const c = o.findIndex((r) => r === n);
+        o.splice(c, 1);
       };
-    }, []), [e, m, l];
+    }, []), [t, y];
+  }, S = () => {
+    const [t, e] = k(1);
+    return g(() => {
+      const n = (c) => {
+        c || e((r) => r + 1);
+      };
+      return o.push(n), () => {
+        const c = o.findIndex((r) => r === n);
+        o.splice(c, 1);
+      };
+    }, []), [t, e];
   };
   return {
-    useLocales: (e = {}) => {
-      const [c, l] = L(
-        () => {
-          const t = {};
-          return p(e, t), t;
-        }
-      ), u = O({});
-      return _(), (t, ...s) => {
-        const f = {};
-        return [n, ...i].reverse().forEach((o) => {
-          Object.assign(f, r[o], c[o]);
-        }), t in f || [n, ...i].some((o) => {
-          if (!c[o])
-            return k(
-              (b) => {
-                l({
-                  ...c,
-                  [o]: h(b)
-                });
-              },
-              u,
-              o,
-              e
-            ), !0;
-          if (!r[o])
-            return k(
-              (b) => {
-                r[o] = h(b), j();
-              },
-              K,
-              o,
-              g
-            ), !0;
-        }), E(f, t, ...s);
+    useLocales: (t = {}) => {
+      const e = h(b(t)), n = h({}), [c, r] = S();
+      return R(
+        (l, ...v) => {
+          const f = {};
+          return [a, ...i].reverse().forEach((s) => {
+            Object.assign(f, u[s], e.current[s]);
+          }), (!e.current[a] || !(l in f)) && [a, ...i].some((s) => {
+            if (!e.current[s])
+              return m(
+                (d) => {
+                  e.current[s] || (e.current = {
+                    ...e.current,
+                    [s]: K(d)
+                  }, r((C) => C + 1));
+                },
+                n.current,
+                s,
+                t
+              ), !0;
+            if (!u[s])
+              return m(
+                (d) => {
+                  u[s] = K(d), j();
+                },
+                E,
+                s,
+                p
+              ), !0;
+          }), x(f, l, ...v);
+        },
+        [c]
+      );
+    },
+    useLang: O,
+    tLocales: (t) => {
+      const e = {};
+      return b(t, e), (n, ...c) => {
+        const r = {};
+        return [a, ...i].reverse().forEach((l) => {
+          Object.assign(r, u[l], e[l]);
+        }), x(r, n, ...c);
       };
     },
-    useSoonI18n: _,
-    tLocales: (e) => {
-      const c = {};
-      return p(e, c), (l, ...u) => {
-        const t = {};
-        return [n, ...i].reverse().forEach((s) => {
-          Object.assign(t, r[s], c[s]);
-        }), E(t, l, ...u);
-      };
-    },
-    getLang: x,
-    setLang: m
+    getLang: I,
+    setLang: y
   };
 };
 export {
-  v as createI18n
+  z as createI18n
 };

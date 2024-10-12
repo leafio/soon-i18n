@@ -1,32 +1,28 @@
 import { loadSyncLocales as b, loadLocale as f, flatTreeKey as m, formatObjKey as y } from "soon-i18n-common";
-import { ref as o } from "vue";
-const K = (u, n = {}) => {
-  const r = o(u.lang ?? ""), t = o(u.fallbacks), a = o({}), d = {};
-  return b(n, a.value), {
+import { ref as r } from "vue";
+const K = (s, n = {}) => {
+  const l = r(s.lang ?? ""), t = r(s.fallbacks ?? []), o = r({}), d = {};
+  return b(n, o.value), {
     tLocales: (v = {}) => {
-      const l = o({}), k = {};
-      return b(v, l.value), (i, ...p) => {
+      const a = r({}), k = {};
+      return b(v, a.value), (i, ...p) => {
         const c = {};
-        return [r.value, ...t.value].reverse().forEach((e) => {
-          Object.assign(
-            c,
-            a.value[e],
-            l.value[e]
-          );
-        }), i in c || [r.value, ...t.value].some((e) => {
-          if (!l.value[e])
+        return [l.value, ...t.value].reverse().forEach((e) => {
+          Object.assign(c, o.value[e], a.value[e]);
+        }), (!a.value[l.value] || !(i in c)) && [l.value, ...t.value].some((e) => {
+          if (!a.value[e])
             return f(
-              (s) => {
-                l.value[e] = m(s);
+              (u) => {
+                a.value[e] = m(u);
               },
               k,
               e,
               v
             ), !0;
-          if (!a.value[e])
+          if (!o.value[e])
             return f(
-              (s) => {
-                a.value[e] = m(s);
+              (u) => {
+                o.value[e] = m(u);
               },
               d,
               e,
@@ -35,7 +31,7 @@ const K = (u, n = {}) => {
         }), y({ ...c }, i, ...p);
       };
     },
-    lang: r,
+    lang: l,
     fallbacks: t
   };
 };

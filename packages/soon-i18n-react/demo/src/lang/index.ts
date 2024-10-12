@@ -11,15 +11,15 @@ const global_locales = {
     zh: zh_global,
     en: en_global,
 };
-type Lang='zh' | 'en'
-type GlobalLocales=typeof en_global | typeof zh_global
+type Lang = 'zh' | 'en'
+type GlobalLocales = typeof en_global | typeof zh_global
 
 export const {
     tLocales,
-    useSoonI18n,
+    useLang,
     useLocales,
 
-} = createI18n<Lang,GlobalLocales>({ lang: "zh", fallbacks: ["en"] }, global_locales);
+} = createI18n<Lang, GlobalLocales>({ lang: "zh", fallbacks: ["en"] }, global_locales);
 
 export const showToast = () => {
     const t = tLocales({ zh: { 'tip': "哈哈，一条中文提醒！！！" }, en: { 'tip': "Aha, an English tip" } })

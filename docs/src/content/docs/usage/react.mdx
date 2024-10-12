@@ -34,7 +34,7 @@ const global_locales = {
   zh: zh_global,
   en: en_global,
 };
-export const { tLocales, getLang, setLang, useLocales, useSoonI18n } =
+export const { tLocales, getLang, setLang, useLocales, useLang } =
   createI18n({ lang: "zh", fallbacks: ["en"] }, global_locales);
 ```
 
@@ -69,10 +69,10 @@ export default Content;
 ### change lang
 
 ```tsx
-import { useSoonI18n } from "../lang";
+import { useLang } from "../lang";
 
 const SwitchLang = () => {
-  const [lang, setLang] = useSoonI18n();
+  const [lang, setLang] = useLang();
   const handleToggle = () => {
     setLang(lang === "en" ? "zh" : "en");
   };

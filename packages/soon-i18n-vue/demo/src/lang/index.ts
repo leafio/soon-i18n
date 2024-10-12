@@ -14,7 +14,7 @@ const global_locales = {
 }
 type Lang='zh' | 'en'
 type GlobalLocales=typeof en_global | typeof zh_global
-export const { tLocales, lang } = createI18n<Lang,GlobalLocales>({ lang: 'zh', fallbacks: ['en'] }, global_locales)
+export const { tLocales, lang } = createI18n<Lang,GlobalLocales>({ lang: 'zh', fallbacks: ['zh'] }, global_locales)
 
 
 export const showToast = () => {

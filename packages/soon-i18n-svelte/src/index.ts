@@ -15,12 +15,12 @@ export const createI18n = <
 >(
   config: {
     lang?: Lang;
-    fallbacks: Lang[];
+    fallbacks?: Lang[];
   },
   globalLocales: Partial<Record<Lang, GlobalLocale | (() => Promise<{ default: GlobalLocale }>)>> = {}
 ) => {
   const _lang = writable<Lang>(config.lang ?? ("" as Lang));
-  const _fallback_langs = writable<Lang[]>(config.fallbacks);
+  const _fallback_langs = writable<Lang[]>(config.fallbacks ?? []);
   const global_locales = writable<any>(loadSyncLocales(globalLocales));
   const global_locales_loading: Partial<Record<Lang, boolean | undefined>> =
     {};
@@ -44,7 +44,7 @@ export const createI18n = <
             Object.assign(locale_data, $global_locales[l], $cur_locales[l]);
           });
 
-          if (!(id in locale_data)) {
+          if (!$cur_locales[$lang] || !(id in locale_data)) {
             [$lang, ...$fallback_langs].some((_f_lang) => {
               if (!$cur_locales[_f_lang]) {
                 loadLocale(

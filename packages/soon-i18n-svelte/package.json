@@ -1,6 +1,6 @@
 {
   "name": "soon-i18n-svelte",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -20,7 +20,7 @@
     ".": {
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js",
-      "require": "./lib/index.cjs"
+      "require": "./lib/index.umd.cjs"
     }
   },
   "license": "MIT",

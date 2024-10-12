@@ -35,38 +35,38 @@ const x = (e, r) => {
     e[t] && typeof e[t] == "object" && (r[t] = u(e[t]));
   return r;
 }, L = (e, r = {}) => {
-  const [t, n] = a(e.lang ?? ""), [c] = a(e.fallbacks), [o, f] = a(d(r), { equals: !1 }), m = {};
+  const [t, n] = a(e.lang ?? ""), [c] = a(e.fallbacks ?? []), [o, f] = a(d(r), { equals: !1 }), m = {};
   return {
-    tLocales: (p = {}) => {
-      const [b, _] = a(d(p), { equals: !1 }), j = {};
+    tLocales: (b = {}) => {
+      const [i, _] = a(d(b), { equals: !1 }), j = {};
       return (h, ...k) => {
-        const i = {};
+        const g = {};
         return [t(), ...c()].reverse().forEach((s) => {
           Object.assign(
-            i,
+            g,
             o()[s],
-            b()[s]
+            i()[s]
           );
-        }), h in i || [t(), ...c()].some((s) => {
-          if (!b()[s])
+        }), (!i()[t()] || !(h in g)) && [t(), ...c()].some((s) => {
+          if (!i()[s])
             return y(
-              (g) => {
-                _((l) => (l[s] = u(g), l));
+              (p) => {
+                _((l) => (l[s] = u(p), l));
               },
               j,
               s,
-              p
+              b
             ), !0;
           if (!o()[s])
             return y(
-              (g) => {
-                f((l) => (l[s] = u(g), l));
+              (p) => {
+                f((l) => (l[s] = u(p), l));
               },
               m,
               s,
               r
             ), !0;
-        }), E(i, h, ...k);
+        }), E(g, h, ...k);
       };
     },
     lang: t,

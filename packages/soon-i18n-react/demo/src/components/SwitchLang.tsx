@@ -1,7 +1,7 @@
-import { tLocales, useSoonI18n } from "../lang";
+import { tLocales, useLang } from "../lang";
 
 const SwitchLang = () => {
-    const [lang, setLang] = useSoonI18n();
+    const [lang, setLang] = useLang();
     const t = tLocales({
         zh: {
             lang: "中文",

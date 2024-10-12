@@ -13,12 +13,12 @@ export const createI18n = <Lang extends string,
   GlobalLocale extends Record<string, any> | undefined>(
     config: {
       lang?: Lang;
-      fallbacks: Lang[];
+      fallbacks?: Lang[];
     },
     globalLocales: Partial<Record<Lang, GlobalLocale | (() => Promise<{ default: GlobalLocale }>)>>={}
   ) => {
   const [_lang, set_lang] = createSignal<Lang>(config.lang ?? ("" as Lang));
-  const [_fallback_langs] = createSignal<Lang[]>(config.fallbacks);
+  const [_fallback_langs] = createSignal<Lang[]>(config.fallbacks??[]);
   const [global_locales, set_global_locales] = createSignal<any>(loadSyncLocales(globalLocales), { equals: false });
   const global_locales_loading: Partial<
     Record<Lang, boolean | undefined>
@@ -65,7 +65,7 @@ export const createI18n = <Lang extends string,
       });
 
 
-      if (!(id in locale_data)) {
+      if (!cur_locales()[_lang()] ||!(id in locale_data)) {
         [_lang(), ..._fallback_langs()].some((_f_lang) => {
           if (!cur_locales()[_f_lang]) {
             loadLocale(

@@ -1,83 +1,83 @@
-import { writable as u, derived as v } from "svelte/store";
+import { writable as f, derived as v } from "svelte/store";
 const w = (e, r) => {
   if (e.indexOf("{") === -1)
     return e;
   let t = e;
-  const c = /\{(.*?)\}/g, n = e.match(c);
-  return n && n.forEach((s) => {
+  const n = /\{(.*?)\}/g, c = e.match(n);
+  return c && c.forEach((s) => {
     if (s.length > 2) {
-      const p = s.slice(1, s.length - 1);
-      t = t.replace(new RegExp(s, "gm"), r[p] ?? "");
+      const b = s.slice(1, s.length - 1);
+      t = t.replace(new RegExp(s, "gm"), r[b] ?? "");
     }
   }), t;
-}, f = (e, r = "", t = {}) => {
-  for (const c of Object.keys(e)) {
-    const n = `${r ? r + "." : ""}${c}`;
-    typeof e[c] != "object" ? t[n] = e[c] : f(e[c], n, t);
+}, u = (e, r = "", t = {}) => {
+  for (const n of Object.keys(e)) {
+    const c = `${r ? r + "." : ""}${n}`;
+    typeof e[n] != "object" ? t[c] = e[n] : u(e[n], c, t);
   }
   return t;
 }, I = (e, r, ...t) => {
   if (!e)
     return "";
-  const c = e[r] || r;
-  return t.length ? typeof c == "function" ? c(...t) : w(c, t[0]) : c;
-}, k = (e, r, t, c) => {
-  if (c && t && !r[t]) {
-    const n = c[t];
-    typeof n == "function" ? (r[t] = !0, n().then((s) => {
+  const n = e[r] || r;
+  return t.length ? typeof n == "function" ? n(...t) : w(n, t[0]) : n;
+}, k = (e, r, t, n) => {
+  if (n && t && !r[t]) {
+    const c = n[t];
+    typeof c == "function" ? (r[t] = !0, c().then((s) => {
       e(s.default ?? {});
     }).finally(() => {
       delete r[t];
-    })) : e(n ?? {});
+    })) : e(c ?? {});
   }
 }, x = (e, r = {}) => {
   for (const t in e)
-    e[t] && typeof e[t] == "object" && (r[t] = f(e[t]));
+    e[t] && typeof e[t] == "object" && (r[t] = u(e[t]));
   return r;
 }, R = (e, r = {}) => {
-  const t = u(e.lang ?? ""), c = u(e.fallbacks), n = u(x(r)), s = {};
+  const t = f(e.lang ?? ""), n = f(e.fallbacks ?? []), c = f(x(r)), s = {};
   return {
-    tLocales: (d = {}) => {
-      const b = u(
-        x(d)
+    tLocales: (h = {}) => {
+      const y = f(
+        x(h)
       ), E = {};
       return v(
-        [t, c, n, b],
-        ([h, y, g, m]) => (j, ...O) => {
-          const a = {};
-          return [h, ...y].reverse().forEach((o) => {
-            Object.assign(a, g[o], m[o]);
-          }), j in a || [h, ...y].some((o) => {
-            if (!m[o])
+        [t, n, c, y],
+        ([i, m, g, a]) => (j, ...O) => {
+          const l = {};
+          return [i, ...m].reverse().forEach((o) => {
+            Object.assign(l, g[o], a[o]);
+          }), (!a[i] || !(j in l)) && [i, ...m].some((o) => {
+            if (!a[o])
               return k(
-                (i) => {
-                  b.update((l) => ({
-                    ...l,
-                    [o]: f(i)
+                (p) => {
+                  y.update((d) => ({
+                    ...d,
+                    [o]: u(p)
                   }));
                 },
                 E,
                 o,
-                d
+                h
               ), !0;
             if (!g[o])
               return k(
-                (i) => {
-                  n.update((l) => ({
-                    ...l,
-                    [o]: f(i)
+                (p) => {
+                  c.update((d) => ({
+                    ...d,
+                    [o]: u(p)
                   }));
                 },
                 s,
                 o,
                 r
               ), !0;
-          }), I({ ...a }, j, ...O);
+          }), I({ ...l }, j, ...O);
         }
       );
     },
     lang: t,
-    fallbacks: c
+    fallbacks: n
   };
 };
 export {
