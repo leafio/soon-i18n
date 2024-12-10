@@ -6,18 +6,20 @@ import {
   flatTreeKey,
   loadLocale,
   loadSyncLocales,
+  GetLocales,
+  SafeLocales,
 } from "soon-i18n-common";
 import { derived, writable } from "svelte/store";
 
 export const createI18n = <
   Lang extends string,
-  GlobalLocale extends Record<string, any> | undefined
+  GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>
 >(
   config: {
     lang?: Lang;
     fallbacks?: Lang[];
   },
-  globalLocales: Partial<Record<Lang, GlobalLocale | (() => Promise<{ default: GlobalLocale }>)>> = {}
+  globalLocales?: GlobalLocales 
 ) => {
   const _lang = writable<Lang>(config.lang ?? ("" as Lang));
   const _fallback_langs = writable<Lang[]>(config.fallbacks ?? []);
@@ -25,8 +27,8 @@ export const createI18n = <
   const global_locales_loading: Partial<Record<Lang, boolean | undefined>> =
     {};
 
-  const tLocales = <Locale extends Record<string, any>>(
-    locales: Partial<Record<Lang, Locale | (() => Promise<{ default: Locale }>)>> = {}
+  const tLocales = <Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
+    locales?:Locales
   ) => {
     const cur_locales = writable<Partial<Record<Lang, any>>>(
       loadSyncLocales(locales)
@@ -80,9 +82,9 @@ export const createI18n = <
           }
 
           return formatObjKey({ ...locale_data }, id, ...obj);
-        }) as <ID extends AllPaths<Locale> | AllPaths<GlobalLocale>>(
+        }) as <ID extends AllPaths<GetLocales<Locales>> | AllPaths<GetLocales<GlobalLocales>>>(
           id: ID,
-          ...arg: GetParams<GetValue<Locale, ID> | GetValue<GlobalLocale, ID>>
+          ...arg: GetParams<GetValue<GetLocales<Locales>, ID> | GetValue<GetLocales<GlobalLocales>, ID>>
         ) => string;
       }
     );
@@ -92,4 +94,18 @@ export const createI18n = <
     lang: _lang,
     fallbacks: _fallback_langs,
   };
+};
+
+
+export const createI18nSafe=createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+  default: object;
+}>)>>>(config: {
+  lang?: Lang;
+  fallbacks?: Lang[];
+}, globalLocales?: GlobalLocales) => {
+  tLocales: <Locales extends Partial<Record<Lang, object | (() => Promise<{
+      default: object;
+  }>)>>>(locales?: Locales) => import('svelte/store').Readable<(id: AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>, ...arg: GetParams<GetValue<SafeLocales<Locales>, AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>> | GetValue<SafeLocales<GlobalLocales>, AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>>>) => string>;
+  lang: import('svelte/store').Writable<Lang>;
+  fallbacks: import('svelte/store').Writable<Lang[]>;
 };

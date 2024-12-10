@@ -20,6 +20,8 @@ const en_content = {
       (pearNum === 1 ? "a pear" : ` ${pearNum} pears`)
     );
   },
-}
+
+  zz:'ss'
+} as const
 
 export default en_content

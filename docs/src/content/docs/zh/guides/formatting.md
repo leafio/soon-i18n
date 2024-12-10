@@ -1,9 +1,9 @@
 ---
-title: Formatting
-description: Soon I18n formatting.
+title: 格式化
+description: Soon I18n 格式化.
 ---
 
-## Named interpolation
+## 模板插值
 
 ```ts
 import { yi } from "soon-i18n";
@@ -12,7 +12,7 @@ const t = yi({ hello: "Hello {name} !" });
 console.log(t("hello", { name: "world" })); //Hello world !
 ```
 
-## Function
+## 函数
 
 ```ts
 import { yi } from "soon-i18n";

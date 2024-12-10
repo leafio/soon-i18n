@@ -1,5 +1,5 @@
 
-import { createI18n } from "soon-i18n-vue";
+import { createI18n } from "soon-i18n-vue"
 
 const en_global = {
     g_welcome: 'Global: Welcome {name}'
@@ -12,9 +12,9 @@ const global_locales = {
     zh: zh_global,
     en: en_global
 }
-type Lang='zh' | 'en'
-type GlobalLocales=typeof en_global | typeof zh_global
-export const { tLocales, lang } = createI18n<Lang,GlobalLocales>({ lang: 'zh', fallbacks: ['zh'] }, global_locales)
+type Lang = 'zh' | 'en'
+
+export const { tLocales, lang } = createI18n({ lang: 'zh' as Lang, fallbacks: ['zh'] }, global_locales)
 
 
 export const showToast = () => {

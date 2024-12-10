@@ -1,34 +1,24 @@
-# soon-i18n
+---
+title: soon-i18n
+description: 超轻量的国际化、多语言库.
+---
 
-a lightweight nested messages i18n library with smart ts prompt can be used in react , vue , svelte , solid , etc...
-
-all editions:
-
-- [soon-i18n](https://www.npmjs.com/package/soon-i18n)
-- [soon-i18n-react](https://www.npmjs.com/package/soon-i18n-react)
-- [soon-i18n-vue](https://www.npmjs.com/package/soon-i18n-vue)
-- [soon-i18n-solid](https://www.npmjs.com/package/soon-i18n-solid)
-- [soon-i18n-svelte](https://www.npmjs.com/package/soon-i18n-svelte)
-
-## [Full Document](https://leafio.github.io/soon-i18n/)
-
-## [中文文档](https://leafio.github.io/soon-i18n/zh)
-
-## install
+## 安装
 
 ```bash
 npm install soon-i18n
+
 ```
 
-## full example
+## 完整示例
 
-example with preact:
+以 preact 为例:
 
 ```bash
  npx degit https://github.com/leafio/soon-i18n/packages/soon-i18n/demo
 ```
 
-## direct usage
+## 直接使用
 
 ```ts
 import { yi } from "soon-i18n";
@@ -40,18 +30,18 @@ console.log(t("hello", { name: "world" }));
 
 > example:[soon-admin-express](https://github.com/leafio/soon-admin-express)
 
-## instance usage
+## 实例用法
 
-### create an instance
+### 创建实例
 
 ```ts
 import { createI18n } from "soon-i18n";
 const en_global = {
   welcome: "Welcome {name}",
-} as const;
+} 
 const zh_global = {
   welcome: "欢迎 {name}",
-} as const;
+}
 
 const global_locales = {
   zh: zh_global,
@@ -63,7 +53,7 @@ export const { tLocales, getLang, setLang } = createI18n(
 );
 ```
 
-### use in js/ts
+### 在 js/ts 中使用
 
 ```ts
 import { tLocales } from "../lang";
@@ -76,7 +66,7 @@ export const showToast = () => {
 };
 ```
 
-### use in components
+### 在组件中使用
 
 ```tsx
 import { tLocales } from "../lang";
@@ -91,7 +81,7 @@ const Content = () => {
 export default Content;
 ```
 
-### change lang
+### 切换语言
 
 ```ts
 import { getLang, setLang } from "../lang";

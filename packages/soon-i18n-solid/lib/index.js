@@ -1,43 +1,43 @@
 import { createSignal as a } from "solid-js";
-const x = (e, r) => {
+const x = (e, n) => {
   if (e.indexOf("{") === -1)
     return e;
   let t = e;
-  const n = /\{(.*?)\}/g, c = e.match(n);
+  const r = /\{(.*?)\}/g, c = e.match(r);
   return c && c.forEach((o) => {
     if (o.length > 2) {
       const f = o.slice(1, o.length - 1);
-      t = t.replace(new RegExp(o, "gm"), r[f] ?? "");
+      t = t.replace(new RegExp(o, "gm"), n[f] ?? "");
     }
   }), t;
-}, u = (e, r = "", t = {}) => {
-  for (const n of Object.keys(e)) {
-    const c = `${r ? r + "." : ""}${n}`;
-    typeof e[n] != "object" ? t[c] = e[n] : u(e[n], c, t);
+}, u = (e, n = "", t = {}) => {
+  for (const r of Object.keys(e)) {
+    const c = `${n ? n + "." : ""}${r}`;
+    typeof e[r] != "object" ? t[c] = e[r] : u(e[r], c, t);
   }
   return t;
-}, E = (e, r, ...t) => {
+}, E = (e, n, ...t) => {
   if (!e)
     return "";
-  const n = e[r] || r;
-  return t.length ? typeof n == "function" ? n(...t) : x(n, t[0]) : n;
-}, y = (e, r, t, n) => {
-  if (n && t && !r[t]) {
-    const c = n[t];
-    typeof c == "function" ? (r[t] = !0, c().then((o) => {
+  const r = e[n] || n;
+  return t.length ? typeof r == "function" ? r(...t) : x(r, t[0]) : r;
+}, y = (e, n, t, r) => {
+  if (r && t && !n[t]) {
+    const c = r[t];
+    typeof c == "function" ? (n[t] = !0, c().then((o) => {
       e(o.default ?? {});
     }).finally(() => {
-      delete r[t];
+      delete n[t];
     })) : e(c ?? {});
   }
-}, d = (e, r = {}) => {
+}, d = (e, n = {}) => {
   for (const t in e)
-    e[t] && typeof e[t] == "object" && (r[t] = u(e[t]));
-  return r;
-}, L = (e, r = {}) => {
-  const [t, n] = a(e.lang ?? ""), [c] = a(e.fallbacks ?? []), [o, f] = a(d(r), { equals: !1 }), m = {};
+    e[t] && typeof e[t] == "object" && (n[t] = u(e[t]));
+  return n;
+}, O = (e, n) => {
+  const [t, r] = a(e.lang ?? ""), [c] = a(e.fallbacks ?? []), [o, f] = a(d(n), { equals: !1 }), m = {};
   return {
-    tLocales: (b = {}) => {
+    tLocales: (b) => {
       const [i, _] = a(d(b), { equals: !1 }), j = {};
       return (h, ...k) => {
         const g = {};
@@ -64,15 +64,16 @@ const x = (e, r) => {
               },
               m,
               s,
-              r
+              n
             ), !0;
         }), E(g, h, ...k);
       };
     },
     lang: t,
-    setLang: n
+    setLang: r
   };
-};
+}, L = O;
 export {
-  L as createI18n
+  O as createI18n,
+  L as createI18nSafe
 };

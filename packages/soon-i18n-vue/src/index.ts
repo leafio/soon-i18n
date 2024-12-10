@@ -1,12 +1,12 @@
-import { AllPaths, GetParams, GetValue, formatObjKey, flatTreeKey, loadLocale, loadSyncLocales } from "soon-i18n-common"
+import { AllPaths, GetParams, GetValue, formatObjKey, flatTreeKey, loadLocale, loadSyncLocales, SafeLocales, GetLocales } from "soon-i18n-common"
 import { ref } from "vue"
 
-export const createI18n = <Lang extends string, GlobalLocale extends Record<string, any> | undefined>(
+export const createI18n = <Lang extends string, GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
   config: {
     lang?: Lang
     fallbacks?: Lang[]
   },
-  globalLocales: Partial<Record<Lang, GlobalLocale | (() => Promise<{ default: GlobalLocale }>)>> = {},
+  globalLocales?: GlobalLocales,
 ) => {
   const _lang = ref<Lang>(config.lang ?? ("" as Lang))
   const _fallback_langs = ref<Lang[]>(config.fallbacks ?? [])
@@ -16,7 +16,7 @@ export const createI18n = <Lang extends string, GlobalLocale extends Record<stri
   //初始化 同步 locales
   loadSyncLocales(globalLocales, global_locales.value)
 
-  const tLocales = <Locale extends Record<string, any>>(locales: Partial<Record<Lang, Locale | (() => Promise<{ default: Locale }>)>> = {}) => {
+  const tLocales = <Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(locales?:Locales) => {
     const cur_locales = ref<Partial<Record<Lang, any>>>({})
     const cur_locales_loading: Partial<Record<Lang, boolean | undefined>> = {}
     //初始化 同步 locales
@@ -42,13 +42,13 @@ export const createI18n = <Lang extends string, GlobalLocale extends Record<stri
 
     return ((id: string, ...obj: any) => {
       const locale_data = {}
-      //合并所有已加载的locale
-      ;[_lang.value, ..._fallback_langs.value].reverse().forEach((l) => {
-        Object.assign(locale_data, global_locales.value[l], cur_locales.value[l])
-      })
+        //合并所有已加载的locale
+        ;[_lang.value, ..._fallback_langs.value].reverse().forEach((l) => {
+          Object.assign(locale_data, global_locales.value[l], cur_locales.value[l])
+        })
 
       if (!cur_locales.value[_lang.value] || !(id in locale_data)) {
-        ;[_lang.value, ..._fallback_langs.value].some((_f_lang) => {
+        [_lang.value, ..._fallback_langs.value].some((_f_lang) => {
           if (!cur_locales.value[_f_lang]) {
             loadLocale(
               (res) => {
@@ -75,7 +75,7 @@ export const createI18n = <Lang extends string, GlobalLocale extends Record<stri
       }
 
       return formatObjKey({ ...locale_data }, id, ...obj)
-    }) as <ID extends AllPaths<Locale> | AllPaths<GlobalLocale>>(id: ID, ...arg: GetParams<GetValue<Locale, ID> | GetValue<GlobalLocale, ID>>) => string
+    }) as <ID extends AllPaths<GetLocales<Locales>> | AllPaths<GetLocales<GlobalLocales>>>(id: ID, ...arg: GetParams<GetValue<GetLocales<Locales>, ID> | GetValue<GetLocales<GlobalLocales>, ID>>) => string
   }
   return {
     tLocales,
@@ -83,3 +83,29 @@ export const createI18n = <Lang extends string, GlobalLocale extends Record<stri
     fallbacks: _fallback_langs,
   }
 }
+
+
+export const createI18nSafe=createI18n  as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+  default: object;
+}>)>>>(config: {
+  lang?: Lang;
+  fallbacks?: Lang[];
+}, globalLocales?: GlobalLocales) => {
+  tLocales: <Locales extends Partial<Record<Lang, object | (() => Promise<{
+      default: object;
+  }>)>>>(locales?: Locales) => <ID extends AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>>(id: ID, ...arg: GetParams<GetValue<SafeLocales<Locales>, ID> | GetValue<SafeLocales<GlobalLocales>, ID>>) => string;
+  lang: [Lang] extends [import('vue').Ref<any, any>] ? import('@vue/shared').IfAny<Lang, import('vue').Ref<Lang, Lang>, Lang> : import('vue').Ref<import('vue').UnwrapRef<Lang>, Lang | import('vue').UnwrapRef<Lang>>;
+  fallbacks: import('vue').Ref<import('@vue/reactivity').UnwrapRefSimple<Lang>[], Lang[] | import('@vue/reactivity').UnwrapRefSimple<Lang>[]>;
+};
+// type xxx<Lang extends string>= Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>
+
+// let x:xxx<'zh'|"en">={}
+// const i18n=createI18n({
+//   lang:'zh',
+//   fallbacks:['zh','en'],
+
+// },{})
+
+
+// const t=i18n.tLocales({zh:{hh:''},en:{zz:''}})
+// t('hh')

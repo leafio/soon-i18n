@@ -1,27 +1,28 @@
-import { flatTreeKey as f, formatObjKey as u, loadSyncLocales as g } from "soon-i18n-common";
-const i = (e) => {
-  const a = f(e);
-  return (t, ...n) => u(a, t, ...n);
-}, j = (e, a = {}) => {
-  let t = e.lang ?? "";
-  const n = e.fallbacks ?? [], c = {};
+import { flatTreeKey as _, formatObjKey as f, loadSyncLocales as g } from "soon-i18n-common";
+const j = (t) => {
+  const a = _(t);
+  return (e, ...n) => f(a, e, ...n);
+}, b = (t, a) => {
+  let e = t.lang ?? "";
+  const n = t.fallbacks ?? [], c = {};
   return g(a, c), {
-    tLocales: (s = {}) => {
+    tLocales: (s) => {
       const o = {};
-      return g(s, o), (L, ..._) => {
+      return g(s ?? {}, o), (u, ...L) => {
         const r = {};
-        return [t, ...n].reverse().forEach((l) => {
+        return [e, ...n].reverse().forEach((l) => {
           Object.assign(r, c[l], o[l]);
-        }), u(r, L, ..._);
+        }), f(r, u, ...L);
       };
     },
-    getLang: () => t,
+    getLang: () => e,
     setLang: (s) => {
-      t = s;
+      e = s;
     }
   };
-};
+}, k = b;
 export {
-  j as createI18n,
-  i as yi
+  b as createI18n,
+  k as createI18nSafe,
+  j as yi
 };

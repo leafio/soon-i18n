@@ -1,6 +1,6 @@
 {
     "name": "soon-i18n-common",
-    "version": "1.0.6",
+    "version": "1.1.0",
     "type": "module",
     "scripts": {
         "dev": "vite",
@@ -8,7 +8,7 @@
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
-    "description": "a lightweight nested messages i18n library with smart ts prompt can be used in react , vue , svelte , solid , etc...",
+    "description": "utils for soon-i18n",
     "homepage": "https://leafio.github.io/soon-i18n/",
     "files": [
         "lib"

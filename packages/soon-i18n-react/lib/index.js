@@ -1,89 +1,94 @@
-import { useState as k, useEffect as g, useRef as h, useCallback as R } from "react";
-import { loadSyncLocales as b, loadLocale as m, flatTreeKey as K, formatObjKey as x } from "soon-i18n-common";
-const z = (L, p = {}) => {
-  const i = L.fallbacks ?? [], E = {}, u = {};
-  b(p, u);
-  let a = L.lang ?? "";
-  const o = [], j = () => {
-    o.forEach((t) => {
+import { useState as g, useEffect as d, useRef as b, useCallback as T } from "react";
+import { loadSyncLocales as h, loadLocale as I, flatTreeKey as _, formatObjKey as j } from "soon-i18n-common";
+const q = (m, K) => {
+  const p = m.fallbacks ?? [], G = {}, u = {};
+  h(K, u);
+  let o = m.lang ?? "";
+  const a = [], x = () => {
+    a.forEach((t) => {
       t();
     });
-  }, y = (t) => {
-    a = t, o.forEach((e) => {
+  }, E = (t) => {
+    o = t, a.forEach((e) => {
       e(t), e();
     });
-  }, I = () => a, O = () => {
-    const [t, e] = k(a);
-    return g(() => {
-      const n = (c) => {
-        c && e(c);
+  }, O = () => o, S = () => {
+    const [t, e] = g(o);
+    return d(() => {
+      const s = (r) => {
+        r && e(r);
       };
-      return o.push(n), () => {
-        const c = o.findIndex((r) => r === n);
-        o.splice(c, 1);
+      return a.push(s), () => {
+        const r = a.findIndex((c) => c === s);
+        a.splice(r, 1);
       };
-    }, []), [t, y];
-  }, S = () => {
-    const [t, e] = k(1);
-    return g(() => {
-      const n = (c) => {
-        c || e((r) => r + 1);
+    }, []), [t, E];
+  }, v = () => {
+    const [t, e] = g(1);
+    return d(() => {
+      const s = (r) => {
+        r || e((c) => c + 1);
       };
-      return o.push(n), () => {
-        const c = o.findIndex((r) => r === n);
-        o.splice(c, 1);
+      return a.push(s), () => {
+        const r = a.findIndex((c) => c === s);
+        a.splice(r, 1);
       };
     }, []), [t, e];
   };
   return {
-    useLocales: (t = {}) => {
-      const e = h(b(t)), n = h({}), [c, r] = S();
-      return R(
-        (l, ...v) => {
-          const f = {};
-          return [a, ...i].reverse().forEach((s) => {
-            Object.assign(f, u[s], e.current[s]);
-          }), (!e.current[a] || !(l in f)) && [a, ...i].some((s) => {
-            if (!e.current[s])
-              return m(
-                (d) => {
-                  e.current[s] || (e.current = {
+    useLocales: (t) => {
+      const e = b(h(t)), s = b({}), [r, c] = v(), [f, C] = g(0), L = b({ updateGlobal: !1, updateLocal: !1 }), l = b(!1);
+      return d(() => (l.current = !0, L.current.updateGlobal ? x() : c((i) => i + 1), () => {
+        l.current = !1;
+      }), []), d(() => {
+        l.current && C(r);
+      }, [r]), T(
+        (i, ...M) => {
+          const k = {};
+          return [o, ...p].reverse().forEach((n) => {
+            Object.assign(k, u[n], e.current[n]);
+          }), (!e.current[o] || !(i in k)) && [o, ...p].some((n) => {
+            if (!e.current[n])
+              return I(
+                (y) => {
+                  e.current[n] || (e.current = {
                     ...e.current,
-                    [s]: K(d)
-                  }, r((C) => C + 1));
+                    [n]: _(y)
+                  }, l.current ? c((R) => R + 1) : L.current.updateLocal = !0);
                 },
-                n.current,
-                s,
+                s.current,
+                n,
                 t
               ), !0;
-            if (!u[s])
-              return m(
-                (d) => {
-                  u[s] = K(d), j();
+            if (!u[n])
+              return I(
+                (y) => {
+                  u[n] = _(y), l.current ? x() : L.current.updateGlobal = !0;
                 },
-                E,
-                s,
-                p
+                G,
+                n,
+                K
               ), !0;
-          }), x(f, l, ...v);
+          }), j(k, i, ...M);
         },
-        [c]
+        [f]
       );
     },
-    useLang: O,
+    useLang: S,
     tLocales: (t) => {
       const e = {};
-      return b(t, e), (n, ...c) => {
-        const r = {};
-        return [a, ...i].reverse().forEach((l) => {
-          Object.assign(r, u[l], e[l]);
-        }), x(r, n, ...c);
+      return h(t, e), (s, ...r) => {
+        const c = {};
+        return [o, ...p].reverse().forEach((f) => {
+          Object.assign(c, u[f], e[f]);
+        }), j(c, s, ...r);
       };
     },
-    getLang: I,
-    setLang: y
+    getLang: O,
+    setLang: E
   };
-};
+}, D = q;
 export {
-  z as createI18n
+  q as createI18n,
+  D as createI18nSafe
 };

@@ -1,6 +1,6 @@
 {
   "name": "soon-i18n-svelte",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -46,7 +46,7 @@
     "vite-plugin-dts": "^3.6.2"
   },
   "dependencies": {
-    "soon-i18n-common": "*"
+    "soon-i18n-common": "^1.0.8"
   },
   "peerDependencies": {
     "svelte": "*"

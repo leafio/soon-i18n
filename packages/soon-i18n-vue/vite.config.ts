@@ -11,6 +11,7 @@ export default defineConfig({
             // rollupTypes: true,
         }),
     ],
+    
     build: {
         // 打包输出的目录
         outDir: "lib",

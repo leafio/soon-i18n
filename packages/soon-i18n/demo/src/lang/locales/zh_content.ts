@@ -10,5 +10,5 @@ const zh_content={
     own: (count: number) => `我有${count}个苹果`,
     eat: (appleNum: number, pearNum: number) =>
       `我吃了${appleNum}个苹果和${pearNum}个梨`,
-}
+} as const 
 export default zh_content

@@ -12,12 +12,11 @@ const global_locales = {
     en: en_global,
 }
 type Lang='zh' | 'en'
-type GlobalLocales=typeof en_global | typeof zh_global
 export const {
     tLocales,
     getLang,
     setLang,
-} = createI18n<Lang,GlobalLocales>({ lang: "zh", fallbacks: ["en"] }, global_locales);
+} = createI18n({ lang: "zh" as Lang, fallbacks: ["en"] }, global_locales);
 
 import mitt from 'mitt'
 export const emitter = mitt()

@@ -1,9 +1,9 @@
 ---
-title: Lazy Loading
-description: Soon I18n lazy loading.
+title: 按需加载
+description: Soon I18n 按需加载.
 ---
 
-Lazy loading only can be used in react , vue , solid , svelte
+按需加载仅能在 react , vue , solid , svelte 中使用。
 
 ## react
 
@@ -13,7 +13,7 @@ const t = useLocales({
   en: () => import("./locales/en"),
 });
 
-//if the locale file is json , and in public file or another server
+//如果locale文件为json ，并且位于public文件夹中或在另一个服务器上
 const t = useLocales({
   zh: () =>
     fetch("any_url/locales/zh.json").then(async (res) => ({
@@ -34,7 +34,7 @@ const t = tLocales({
   en: () => import("./locales/en"),
 });
 
-//if the locale file is json , and in public file or another server
+//如果locale文件为json ，并且位于public文件夹中或在另一个服务器上
 const t = tLocales({
   zh: () =>
     fetch("any_url/locales/zh.json").then(async (res) => ({
@@ -47,7 +47,7 @@ const t = tLocales({
 });
 ```
 
-### locales
+## locale 文件
 
 ./locales/en.ts
 

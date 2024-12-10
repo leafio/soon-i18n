@@ -34,21 +34,21 @@ const w = (e, r) => {
   for (const t in e)
     e[t] && typeof e[t] == "object" && (r[t] = u(e[t]));
   return r;
-}, R = (e, r = {}) => {
+}, L = (e, r) => {
   const t = f(e.lang ?? ""), n = f(e.fallbacks ?? []), c = f(x(r)), s = {};
   return {
-    tLocales: (h = {}) => {
+    tLocales: (h) => {
       const y = f(
         x(h)
       ), E = {};
       return v(
         [t, n, c, y],
-        ([i, m, g, a]) => (j, ...O) => {
+        ([a, m, g, i]) => (j, ...O) => {
           const l = {};
-          return [i, ...m].reverse().forEach((o) => {
-            Object.assign(l, g[o], a[o]);
-          }), (!a[i] || !(j in l)) && [i, ...m].some((o) => {
-            if (!a[o])
+          return [a, ...m].reverse().forEach((o) => {
+            Object.assign(l, g[o], i[o]);
+          }), (!i[a] || !(j in l)) && [a, ...m].some((o) => {
+            if (!i[o])
               return k(
                 (p) => {
                   y.update((d) => ({
@@ -79,7 +79,8 @@ const w = (e, r) => {
     lang: t,
     fallbacks: n
   };
-};
+}, S = L;
 export {
-  R as createI18n
+  L as createI18n,
+  S as createI18nSafe
 };

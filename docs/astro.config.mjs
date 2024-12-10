@@ -1,6 +1,6 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import starlight from '@astrojs/starlight';
+import { defineConfig } from 'astro/config'
+import starlight from '@astrojs/starlight'
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,18 +15,46 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Guides',
+					translations: {
+						zh: '概览'
+					},
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Introduction', slug: 'guides/introduction' },
-						{ label: 'Formatting', slug: 'guides/formatting' },
-						{ label: 'Lazy loading', slug: 'guides/lazy' },
+						{
+							label: 'Introduction', slug: 'guides/introduction',
+							translations: {
+								zh: '简介'
+							}
+						},
+						{
+							label: 'Formatting', slug: 'guides/formatting', translations: {
+								zh: '格式化'
+							}
+						},
+						{
+							label: 'Lazy loading', slug: 'guides/lazy', translations: {
+								zh: '按需加载'
+							}
+						},
+						{
+							label: 'Locale Safe', slug: 'guides/locale-safe', translations: {
+								zh: '语言类型安全'
+							}
+						},
 					],
 				},
 				{
 					label: 'Usage',
+					translations: {
+						zh: '用法'
+					},
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'General', slug: 'usage/soon-i18n' },
+						{
+							label: 'General', slug: 'usage/soon-i18n', translations: {
+								zh: '通用'
+							}
+						},
 						{ label: 'React', slug: 'usage/react' },
 						{ label: 'Vue', slug: 'usage/vue' },
 						{ label: 'Solid', slug: 'usage/solid' },
@@ -36,4 +64,8 @@ export default defineConfig({
 			],
 		}),
 	],
-});
+	i18n: {
+		defaultLocale: "en",
+		locales: ["en", "zh"],
+	}
+})

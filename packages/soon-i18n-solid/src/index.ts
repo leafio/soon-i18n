@@ -7,15 +7,17 @@ import {
   flatTreeKey,
   loadLocale,
   loadSyncLocales,
+  GetLocales,
+  SafeLocales,
 } from "soon-i18n-common";
 
 export const createI18n = <Lang extends string,
-  GlobalLocale extends Record<string, any> | undefined>(
+GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
     config: {
       lang?: Lang;
       fallbacks?: Lang[];
     },
-    globalLocales: Partial<Record<Lang, GlobalLocale | (() => Promise<{ default: GlobalLocale }>)>>={}
+    globalLocales?: GlobalLocales
   ) => {
   const [_lang, set_lang] = createSignal<Lang>(config.lang ?? ("" as Lang));
   const [_fallback_langs] = createSignal<Lang[]>(config.fallbacks??[]);
@@ -24,8 +26,8 @@ export const createI18n = <Lang extends string,
     Record<Lang, boolean | undefined>
   > = {};
 
-  const tLocales = <Locale extends Record<string, any>>(
-    locales: Partial<Record<Lang, Locale | (() => Promise<{ default: Locale }>)>>={}
+  const tLocales = <Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
+    locales?:Locales
   ) => {
 
     const [cur_locales, set_cur_locales] = createSignal<any>(loadSyncLocales(locales), { equals: false });
@@ -100,9 +102,9 @@ export const createI18n = <Lang extends string,
       }
 
       return formatObjKey(locale_data, id, ...obj);
-    }) as <ID extends AllPaths<Locale> | AllPaths<GlobalLocale>>(
+    }) as <ID extends AllPaths<GetLocales<Locales>> | AllPaths<GetLocales<GlobalLocales>>>(
       id: ID,
-      ...arg: GetParams<GetValue<Locale, ID> | GetValue<GlobalLocale, ID>>
+      ...arg: GetParams<GetValue<GetLocales<Locales>, ID> | GetValue<GetLocales<GlobalLocales>, ID>>
     ) => string;
   };
   return {
@@ -110,4 +112,17 @@ export const createI18n = <Lang extends string,
     lang: _lang,
     setLang: set_lang,
   };
+};
+
+export const createI18nSafe=createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+  default: object;
+}>)>>>(config: {
+  lang?: Lang;
+  fallbacks?: Lang[];
+}, globalLocales?: GlobalLocales) => {
+  tLocales: <Locales extends Partial<Record<Lang, object | (() => Promise<{
+      default: object;
+  }>)>>>(locales?: Locales) => <ID extends AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>>(id: ID, ...arg: GetParams<GetValue<SafeLocales<Locales>, ID> | GetValue<SafeLocales<GlobalLocales>, ID>>) => string;
+  lang: import('solid-js').Accessor<Lang>;
+  setLang: import('solid-js').Setter<Lang>;
 };
