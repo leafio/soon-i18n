@@ -1,6 +1,6 @@
-import { AllPaths, GetParams, GetValue, GetLocales, SafeLocales } from 'soon-i18n-common';
+import { AllPaths, GetParams, GetValue, GetLocales, SafeLocales, yi } from 'soon-i18n-common';
 
-export declare const createI18n: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+declare const createI18n: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
     default: object;
 }>)>>>(config: {
     lang?: Lang;
@@ -12,7 +12,7 @@ export declare const createI18n: <Lang extends string, GlobalLocales extends Par
     lang: import('solid-js').Accessor<Lang>;
     setLang: import('solid-js').Setter<Lang>;
 };
-export declare const createI18nSafe: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+declare const createI18nSafe: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
     default: object;
 }>)>>>(config: {
     lang?: Lang;
@@ -24,3 +24,4 @@ export declare const createI18nSafe: <Lang extends string, GlobalLocales extends
     lang: import('solid-js').Accessor<Lang>;
     setLang: import('solid-js').Setter<Lang>;
 };
+export { yi, createI18n, createI18nSafe };

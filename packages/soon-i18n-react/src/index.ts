@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AllPaths, GetParams, GetValue, formatObjKey, flatTreeKey, loadLocale, loadSyncLocales, GetLocales, SafeLocales } from "soon-i18n-common"
+import { AllPaths, GetParams, GetValue, formatObjKey, flatTreeKey, loadLocale, loadSyncLocales, GetLocales, SafeLocales, yi } from "soon-i18n-common"
 
-export const createI18n = <Lang extends string, GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
+const createI18n = <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
     config: {
         lang?: Lang
         fallbacks?: Lang[]
     },
-    globalLocales?:GlobalLocales,
+    globalLocales?: GlobalLocales,
 ) => {
     const _fallback_langs = config.fallbacks ?? []
     const global_locales_loading: Partial<Record<Lang, boolean | undefined>> = {}
-    const global_locales= {} as GlobalLocales
+    const global_locales = {} as GlobalLocales
     //初始化 同步 locales
     loadSyncLocales(globalLocales, global_locales)
     let _lang = config.lang ?? ("" as Lang)
@@ -65,7 +65,7 @@ export const createI18n = <Lang extends string, GlobalLocales  extends Partial<R
         return [key, setKey] as const
     }
 
-    const useLocales =<Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(locales?: Locales)  => {
+    const useLocales = <Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(locales?: Locales) => {
         const cur_locales_ref = useRef<GlobalLocales>(loadSyncLocales(locales))
         const cur_locales_loading = useRef<Partial<Record<string, boolean | undefined>>>({})
         const [key, setKey] = useKey()
@@ -184,7 +184,7 @@ export const createI18n = <Lang extends string, GlobalLocales  extends Partial<R
 }
 
 
-export const createI18nSafe=createI18n as  <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+const createI18nSafe = createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
     default: object;
 }>)>>>(config: {
     lang?: Lang;
@@ -200,3 +200,5 @@ export const createI18nSafe=createI18n as  <Lang extends string, GlobalLocales e
     getLang: () => Lang;
     setLang: (lang: Lang) => void;
 };
+
+export { yi, createI18n, createI18nSafe }

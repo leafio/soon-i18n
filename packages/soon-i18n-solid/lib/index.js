@@ -1,79 +1,83 @@
-import { createSignal as a } from "solid-js";
-const x = (e, n) => {
+import { createSignal as u } from "solid-js";
+const E = (e, n) => {
   if (e.indexOf("{") === -1)
     return e;
   let t = e;
-  const r = /\{(.*?)\}/g, c = e.match(r);
-  return c && c.forEach((o) => {
-    if (o.length > 2) {
-      const f = o.slice(1, o.length - 1);
-      t = t.replace(new RegExp(o, "gm"), n[f] ?? "");
+  const o = /\{(.*?)\}/g, c = e.match(o);
+  return c && c.forEach((r) => {
+    if (r.length > 2) {
+      const f = r.slice(1, r.length - 1);
+      t = t.replace(new RegExp(r, "gm"), n[f] ?? "");
     }
   }), t;
-}, u = (e, n = "", t = {}) => {
-  for (const r of Object.keys(e)) {
-    const c = `${n ? n + "." : ""}${r}`;
-    typeof e[r] != "object" ? t[c] = e[r] : u(e[r], c, t);
+}, a = (e, n = "", t = {}) => {
+  for (const o of Object.keys(e)) {
+    const c = `${n ? n + "." : ""}${o}`;
+    typeof e[o] != "object" ? t[c] = e[o] : a(e[o], c, t);
   }
   return t;
-}, E = (e, n, ...t) => {
+}, m = (e, n, ...t) => {
   if (!e)
     return "";
-  const r = e[n] || n;
-  return t.length ? typeof r == "function" ? r(...t) : x(r, t[0]) : r;
-}, y = (e, n, t, r) => {
-  if (r && t && !n[t]) {
-    const c = r[t];
-    typeof c == "function" ? (n[t] = !0, c().then((o) => {
-      e(o.default ?? {});
+  const o = e[n] || n;
+  return t.length ? typeof o == "function" ? o(...t) : E(o, t[0]) : o;
+}, y = (e, n, t, o) => {
+  if (o && t && !n[t]) {
+    const c = o[t];
+    typeof c == "function" ? (n[t] = !0, c().then((r) => {
+      e(r.default ?? {});
     }).finally(() => {
       delete n[t];
     })) : e(c ?? {});
   }
 }, d = (e, n = {}) => {
   for (const t in e)
-    e[t] && typeof e[t] == "object" && (n[t] = u(e[t]));
+    e[t] && typeof e[t] == "object" && (n[t] = a(e[t]));
   return n;
+}, L = (e) => {
+  const n = a(e);
+  return (t, ...o) => m(n, t, ...o);
 }, O = (e, n) => {
-  const [t, r] = a(e.lang ?? ""), [c] = a(e.fallbacks ?? []), [o, f] = a(d(n), { equals: !1 }), m = {};
+  const [t, o] = u(e.lang ?? ""), [c] = u(e.fallbacks ?? []), [r, f] = u(d(n), { equals: !1 }), _ = {};
   return {
     tLocales: (b) => {
-      const [i, _] = a(d(b), { equals: !1 }), j = {};
-      return (h, ...k) => {
+      const [i, j] = u(d(b), { equals: !1 }), k = {};
+      return (h, ...x) => {
         const g = {};
         return [t(), ...c()].reverse().forEach((s) => {
           Object.assign(
             g,
-            o()[s],
+            r()[s],
             i()[s]
           );
         }), (!i()[t()] || !(h in g)) && [t(), ...c()].some((s) => {
           if (!i()[s])
             return y(
               (p) => {
-                _((l) => (l[s] = u(p), l));
+                j((l) => (l[s] = a(p), l));
               },
-              j,
+              k,
               s,
               b
             ), !0;
-          if (!o()[s])
+          if (!r()[s])
             return y(
               (p) => {
-                f((l) => (l[s] = u(p), l));
+                f((l) => (l[s] = a(p), l));
               },
-              m,
+              _,
               s,
               n
             ), !0;
-        }), E(g, h, ...k);
+        }), m(g, h, ...x);
       };
     },
     lang: t,
-    setLang: r
+    setLang: o
   };
-}, L = O;
+}, S = O;
 export {
   O as createI18n,
-  L as createI18nSafe
+  S as createI18nSafe,
+  L as yi
 };

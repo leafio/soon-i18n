@@ -2,32 +2,21 @@ import {
     AllPaths,
     GetParams,
     GetValue,
-    flatTreeKey,
     formatObjKey,
     loadSyncLocales,
     GetLocales,
-    SafeLocales
+    SafeLocales,
+    yi
 } from "soon-i18n-common"
 
 
-
-export const yi = <const T extends Record<string, any>>(locale: T) => {
-    const flat_messages = flatTreeKey(locale)
-    return ((id: string, ...obj: any) => {
-        return formatObjKey(flat_messages, id, ...obj)
-    }) as <ID extends AllPaths<T>>(
-        id: ID,
-        ...arg: GetParams<GetValue<T, ID>>
-    ) => string
-}
-
-export const createI18n = <Lang extends string,
-GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
+const createI18n = <Lang extends string,
+    GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
         config: {
             lang?: Lang
             fallbacks?: Lang[]
         },
-        globalLocales?:GlobalLocales
+        globalLocales?: GlobalLocales
     ) => {
     let _lang = config.lang ?? ""
     const _fallback_langs = config.fallbacks ?? []
@@ -62,7 +51,7 @@ GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: o
     }
 }
 
-export const createI18nSafe=createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+const createI18nSafe = createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
     default: object;
 }>)>>>(config: {
     lang?: Lang;
@@ -74,3 +63,6 @@ export const createI18nSafe=createI18n as <Lang extends string, GlobalLocales ex
     getLang: () => string | Lang;
     setLang: (value: string) => void;
 };
+
+
+export { yi,createI18n,createI18nSafe }

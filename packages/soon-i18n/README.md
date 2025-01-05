@@ -41,26 +41,23 @@ console.log(t("hello", { name: "world" }));
 > example:[soon-admin-express](https://github.com/leafio/soon-admin-express)
 
 ## instance usage
-
 ### create an instance
 
 ```ts
 import { createI18n } from "soon-i18n";
-const en_global = {
-  welcome: "Welcome {name}",
-} as const;
-const zh_global = {
-  welcome: "欢迎 {name}",
-} as const;
 
 const global_locales = {
-  zh: zh_global,
-  en: en_global,
+  zh: { g_welcome: "全局：欢迎 {name}" },
+  en: { g_welcome: "Global: Welcome {name}" },
 };
+type Lang = "zh" | "en";
 export const { tLocales, getLang, setLang } = createI18n(
-  { lang: "zh", fallbacks: ["en"] },
+  { lang: "zh" as Lang, fallbacks: ["en"] },
   global_locales
 );
+
+import mitt from "mitt";
+export const emitter = mitt();
 ```
 
 ### use in js/ts
@@ -94,12 +91,38 @@ export default Content;
 ### change lang
 
 ```ts
-import { getLang, setLang } from "../lang";
+import { getLang, setLang, emitter } from "../lang";
 const handleToggle = () => {
   setLang(lang === "en" ? "zh" : "en");
+  emitter.emit("lang-change");
 };
 const SwitchLang = () => {
   return <button onClick={handleToggle}>{getLang()}</button>;
 };
 export default SwitchLang;
+```
+### Refresh UI by key after lang changed
+
+```tsx
+import SwitchLang from "./components/SwitchLang";
+import Content from "./components/Content";
+import { useEffect, useState } from "react";
+import { getLang, emitter } from "./lang";
+
+export function App() {
+  const [lang, setLang] = useState(getLang());
+  useEffect(() => {
+    emitter.on("lang-change", () => {
+      setLang(getLang());
+    });
+  }, []);
+
+  return (
+    <div className="app card" key={lang}>
+      <div>app.tsx</div>
+      <SwitchLang />
+      <Content />
+    </div>
+  );
+}
 ```

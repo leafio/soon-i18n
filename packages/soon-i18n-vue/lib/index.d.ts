@@ -1,6 +1,6 @@
-import { AllPaths, GetParams, GetValue, SafeLocales, GetLocales } from 'soon-i18n-common';
+import { AllPaths, GetParams, GetValue, SafeLocales, GetLocales, yi } from 'soon-i18n-common';
 
-export declare const createI18n: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+declare const createI18n: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
     default: object;
 }>)>>>(config: {
     lang?: Lang;
@@ -12,7 +12,7 @@ export declare const createI18n: <Lang extends string, GlobalLocales extends Par
     lang: [Lang] extends [import('vue').Ref<any, any>] ? import('@vue/shared').IfAny<Lang, import('vue').Ref<Lang, Lang>, Lang> : import('vue').Ref<import('vue').UnwrapRef<Lang>, Lang | import('vue').UnwrapRef<Lang>>;
     fallbacks: import('vue').Ref<import('@vue/reactivity').UnwrapRefSimple<Lang>[], Lang[] | import('@vue/reactivity').UnwrapRefSimple<Lang>[]>;
 };
-export declare const createI18nSafe: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+declare const createI18nSafe: <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
     default: object;
 }>)>>>(config: {
     lang?: Lang;
@@ -24,3 +24,4 @@ export declare const createI18nSafe: <Lang extends string, GlobalLocales extends
     lang: [Lang] extends [import('vue').Ref<any, any>] ? import('@vue/shared').IfAny<Lang, import('vue').Ref<Lang, Lang>, Lang> : import('vue').Ref<import('vue').UnwrapRef<Lang>, Lang | import('vue').UnwrapRef<Lang>>;
     fallbacks: import('vue').Ref<import('@vue/reactivity').UnwrapRefSimple<Lang>[], Lang[] | import('@vue/reactivity').UnwrapRefSimple<Lang>[]>;
 };
+export { yi, createI18n, createI18nSafe };

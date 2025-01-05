@@ -1,10 +1,11 @@
-import { useState as g, useEffect as d, useRef as b, useCallback as T } from "react";
-import { loadSyncLocales as h, loadLocale as I, flatTreeKey as _, formatObjKey as j } from "soon-i18n-common";
-const q = (m, K) => {
-  const p = m.fallbacks ?? [], G = {}, u = {};
-  h(K, u);
-  let o = m.lang ?? "";
-  const a = [], x = () => {
+import { useState as g, useEffect as d, useRef as p, useCallback as T } from "react";
+import { loadSyncLocales as m, loadLocale as I, flatTreeKey as _, formatObjKey as j } from "soon-i18n-common";
+import { yi as J } from "soon-i18n-common";
+const q = (h, x) => {
+  const b = h.fallbacks ?? [], G = {}, u = {};
+  m(x, u);
+  let o = h.lang ?? "";
+  const a = [], K = () => {
     a.forEach((t) => {
       t();
     });
@@ -37,24 +38,24 @@ const q = (m, K) => {
   };
   return {
     useLocales: (t) => {
-      const e = b(h(t)), s = b({}), [r, c] = v(), [f, C] = g(0), L = b({ updateGlobal: !1, updateLocal: !1 }), l = b(!1);
-      return d(() => (l.current = !0, L.current.updateGlobal ? x() : c((i) => i + 1), () => {
+      const e = p(m(t)), s = p({}), [r, c] = v(), [f, C] = g(0), y = p({ updateGlobal: !1, updateLocal: !1 }), l = p(!1);
+      return d(() => (l.current = !0, y.current.updateGlobal ? K() : c((i) => i + 1), () => {
         l.current = !1;
       }), []), d(() => {
         l.current && C(r);
       }, [r]), T(
         (i, ...M) => {
-          const k = {};
-          return [o, ...p].reverse().forEach((n) => {
-            Object.assign(k, u[n], e.current[n]);
-          }), (!e.current[o] || !(i in k)) && [o, ...p].some((n) => {
+          const L = {};
+          return [o, ...b].reverse().forEach((n) => {
+            Object.assign(L, u[n], e.current[n]);
+          }), (!e.current[o] || !(i in L)) && [o, ...b].some((n) => {
             if (!e.current[n])
               return I(
-                (y) => {
+                (k) => {
                   e.current[n] || (e.current = {
                     ...e.current,
-                    [n]: _(y)
-                  }, l.current ? c((R) => R + 1) : L.current.updateLocal = !0);
+                    [n]: _(k)
+                  }, l.current ? c((R) => R + 1) : y.current.updateLocal = !0);
                 },
                 s.current,
                 n,
@@ -62,14 +63,14 @@ const q = (m, K) => {
               ), !0;
             if (!u[n])
               return I(
-                (y) => {
-                  u[n] = _(y), l.current ? x() : L.current.updateGlobal = !0;
+                (k) => {
+                  u[n] = _(k), l.current ? K() : y.current.updateGlobal = !0;
                 },
                 G,
                 n,
-                K
+                x
               ), !0;
-          }), j(k, i, ...M);
+          }), j(L, i, ...M);
         },
         [f]
       );
@@ -77,9 +78,9 @@ const q = (m, K) => {
     useLang: S,
     tLocales: (t) => {
       const e = {};
-      return h(t, e), (s, ...r) => {
+      return m(t, e), (s, ...r) => {
         const c = {};
-        return [o, ...p].reverse().forEach((f) => {
+        return [o, ...b].reverse().forEach((f) => {
           Object.assign(c, u[f], e[f]);
         }), j(c, s, ...r);
       };
@@ -90,5 +91,6 @@ const q = (m, K) => {
 }, D = q;
 export {
   q as createI18n,
-  D as createI18nSafe
+  D as createI18nSafe,
+  J as yi
 };

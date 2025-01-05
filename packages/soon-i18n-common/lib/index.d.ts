@@ -6,6 +6,7 @@ export declare const flatTreeKey: (obj: Record<string, any>, curKey?: string, re
 export declare const formatObjKey: (messages: any, id: string, ...obj: any) => any;
 export declare const loadLocale: (callback: (locale: any) => void, langLoading: Record<string, any>, lang?: string, localesRaw?: Record<string, any>) => void;
 export declare const loadSyncLocales: (rawLocales: Record<string, any> | undefined, targetLocales?: any) => any;
+export declare const yi: <const T extends Record<string, any>>(locale: T) => <ID extends AllPaths<T>>(id: ID, ...arg: GetParams<GetValue<T, ID>>) => string;
 export type GetParamsOfStr<Str> = Str extends `${string}{${infer Key}}${infer Right}` ? `${Key}` | GetParamsOfStr<`${Right}`> : never;
 export type OptionParams<Params> = Params extends never ? [obj?: any] : Partial<Params> extends Params ? [obj?: Params] : [obj: Params];
 export type GetParamsOfFun<Fun extends (...args: any) => any> = Parameters<Fun>;

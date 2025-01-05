@@ -86,6 +86,17 @@ export const loadSyncLocales = (rawLocales: Record<string,any>|undefined, target
 }
 
 
+export const yi = <const T extends Record<string, any>>(locale: T) => {
+    const flat_messages = flatTreeKey(locale)
+    return ((id: string, ...obj: any) => {
+        return formatObjKey(flat_messages, id, ...obj)
+    }) as <ID extends AllPaths<T>>(
+        id: ID,
+        ...arg: GetParams<GetValue<T, ID>>
+    ) => string
+}
+
+
 
 
 export type GetParamsOfStr<Str> =

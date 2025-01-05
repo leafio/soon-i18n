@@ -36,21 +36,19 @@ console.log(t("hello", { name: "world" }));
 
 ```ts
 import { createI18n } from "soon-i18n";
-const en_global = {
-  welcome: "Welcome {name}",
-} 
-const zh_global = {
-  welcome: "欢迎 {name}",
-}
 
 const global_locales = {
-  zh: zh_global,
-  en: en_global,
+  zh: { g_welcome: "全局：欢迎 {name}" },
+  en: { g_welcome: "Global: Welcome {name}" },
 };
+type Lang = "zh" | "en";
 export const { tLocales, getLang, setLang } = createI18n(
-  { lang: "zh", fallbacks: ["en"] },
+  { lang: "zh" as Lang, fallbacks: ["en"] },
   global_locales
 );
+
+import mitt from "mitt";
+export const emitter = mitt();
 ```
 
 ### 在 js/ts 中使用
@@ -84,12 +82,39 @@ export default Content;
 ### 切换语言
 
 ```ts
-import { getLang, setLang } from "../lang";
+import { getLang, setLang, emitter } from "../lang";
 const handleToggle = () => {
   setLang(lang === "en" ? "zh" : "en");
+  emitter.emit("lang-change");
 };
 const SwitchLang = () => {
   return <button onClick={handleToggle}>{getLang()}</button>;
 };
 export default SwitchLang;
+```
+
+### 语言变化后，以 key 值刷新 UI
+
+```tsx
+import SwitchLang from "./components/SwitchLang";
+import Content from "./components/Content";
+import { useEffect, useState } from "react";
+import { getLang, emitter } from "./lang";
+
+export function App() {
+  const [lang, setLang] = useState(getLang());
+  useEffect(() => {
+    emitter.on("lang-change", () => {
+      setLang(getLang());
+    });
+  }, []);
+
+  return (
+    <div className="app card" key={lang}>
+      <div>app.tsx</div>
+      <SwitchLang />
+      <Content />
+    </div>
+  );
+}
 ```

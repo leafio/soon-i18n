@@ -8,10 +8,11 @@ import {
   loadSyncLocales,
   GetLocales,
   SafeLocales,
+  yi,
 } from "soon-i18n-common";
-import { derived, writable } from "svelte/store";
+import { derived, Readable, Writable, writable } from "svelte/store";
 
-export const createI18n = <
+ const createI18n = <
   Lang extends string,
   GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>
 >(
@@ -82,12 +83,12 @@ export const createI18n = <
           }
 
           return formatObjKey({ ...locale_data }, id, ...obj);
-        }) as <ID extends AllPaths<GetLocales<Locales>> | AllPaths<GetLocales<GlobalLocales>>>(
-          id: ID,
-          ...arg: GetParams<GetValue<GetLocales<Locales>, ID> | GetValue<GetLocales<GlobalLocales>, ID>>
-        ) => string;
+        }) 
       }
-    );
+    )as Readable<<ID extends AllPaths<GetLocales<Locales>> | AllPaths<GetLocales<GlobalLocales>>>(
+      id: ID,
+      ...arg: GetParams<GetValue<GetLocales<Locales>, ID> | GetValue<GetLocales<GlobalLocales>, ID>>
+    ) => string>
   };
   return {
     tLocales,
@@ -97,7 +98,7 @@ export const createI18n = <
 };
 
 
-export const createI18nSafe=createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+ const createI18nSafe=createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
   default: object;
 }>)>>>(config: {
   lang?: Lang;
@@ -105,7 +106,9 @@ export const createI18nSafe=createI18n as <Lang extends string, GlobalLocales ex
 }, globalLocales?: GlobalLocales) => {
   tLocales: <Locales extends Partial<Record<Lang, object | (() => Promise<{
       default: object;
-  }>)>>>(locales?: Locales) => import('svelte/store').Readable<(id: AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>, ...arg: GetParams<GetValue<SafeLocales<Locales>, AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>> | GetValue<SafeLocales<GlobalLocales>, AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>>>) => string>;
-  lang: import('svelte/store').Writable<Lang>;
-  fallbacks: import('svelte/store').Writable<Lang[]>;
+  }>)>>>(locales?: Locales) => Readable<(<ID extends AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>>(id: ID, ...arg: GetParams<GetValue<SafeLocales<Locales>, ID> | GetValue<SafeLocales<GlobalLocales>, ID>>) => string)>;
+  lang: Writable<Lang>;
+  fallbacks: Writable<Lang[]>;
 };
+
+export { yi, createI18n, createI18nSafe }

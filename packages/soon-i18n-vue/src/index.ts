@@ -1,7 +1,7 @@
-import { AllPaths, GetParams, GetValue, formatObjKey, flatTreeKey, loadLocale, loadSyncLocales, SafeLocales, GetLocales } from "soon-i18n-common"
+import { AllPaths, GetParams, GetValue, formatObjKey, flatTreeKey, loadLocale, loadSyncLocales, SafeLocales, GetLocales, yi } from "soon-i18n-common"
 import { ref } from "vue"
 
-export const createI18n = <Lang extends string, GlobalLocales  extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
+const createI18n = <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(
   config: {
     lang?: Lang
     fallbacks?: Lang[]
@@ -16,7 +16,7 @@ export const createI18n = <Lang extends string, GlobalLocales  extends Partial<R
   //初始化 同步 locales
   loadSyncLocales(globalLocales, global_locales.value)
 
-  const tLocales = <Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(locales?:Locales) => {
+  const tLocales = <Locales extends Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>>(locales?: Locales) => {
     const cur_locales = ref<Partial<Record<Lang, any>>>({})
     const cur_locales_loading: Partial<Record<Lang, boolean | undefined>> = {}
     //初始化 同步 locales
@@ -85,27 +85,19 @@ export const createI18n = <Lang extends string, GlobalLocales  extends Partial<R
 }
 
 
-export const createI18nSafe=createI18n  as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
+const createI18nSafe = createI18n as <Lang extends string, GlobalLocales extends Partial<Record<Lang, object | (() => Promise<{
   default: object;
 }>)>>>(config: {
   lang?: Lang;
   fallbacks?: Lang[];
 }, globalLocales?: GlobalLocales) => {
   tLocales: <Locales extends Partial<Record<Lang, object | (() => Promise<{
-      default: object;
+    default: object;
   }>)>>>(locales?: Locales) => <ID extends AllPaths<SafeLocales<Locales>> | AllPaths<SafeLocales<GlobalLocales>>>(id: ID, ...arg: GetParams<GetValue<SafeLocales<Locales>, ID> | GetValue<SafeLocales<GlobalLocales>, ID>>) => string;
   lang: [Lang] extends [import('vue').Ref<any, any>] ? import('@vue/shared').IfAny<Lang, import('vue').Ref<Lang, Lang>, Lang> : import('vue').Ref<import('vue').UnwrapRef<Lang>, Lang | import('vue').UnwrapRef<Lang>>;
   fallbacks: import('vue').Ref<import('@vue/reactivity').UnwrapRefSimple<Lang>[], Lang[] | import('@vue/reactivity').UnwrapRefSimple<Lang>[]>;
 };
-// type xxx<Lang extends string>= Partial<Record<Lang, object | (() => Promise<{ default: object }>)>>
-
-// let x:xxx<'zh'|"en">={}
-// const i18n=createI18n({
-//   lang:'zh',
-//   fallbacks:['zh','en'],
-
-// },{})
 
 
-// const t=i18n.tLocales({zh:{hh:''},en:{zz:''}})
-// t('hh')
+export { yi, createI18n, createI18nSafe }
+

@@ -32,7 +32,7 @@
 
 <div class="content card">
   <div>child: Content.svelte</div>
-  <span>{$t("g_welcome")}</span>
+  <span>{$t("g_welcome",{name:$t('world')})}</span>
 
   <div class="state card">
     <div>{$t("keepState")}</div>

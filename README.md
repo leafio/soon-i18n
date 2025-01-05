@@ -11,3 +11,5 @@ all editions:
 - soon-i18n-react
 
 ## [Full Document](https://leafio.github.io/soon-i18n/)
+
+## [中文文档](https://leafio.github.io/soon-i18n/zh)

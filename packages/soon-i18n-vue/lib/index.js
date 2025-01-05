@@ -1,41 +1,43 @@
-import { loadSyncLocales as i, loadLocale as b, flatTreeKey as m, formatObjKey as y } from "soon-i18n-common";
-import { ref as t } from "vue";
+import { loadSyncLocales as i, loadLocale as m, flatTreeKey as b, formatObjKey as k } from "soon-i18n-common";
+import { yi as S } from "soon-i18n-common";
+import { ref as r } from "vue";
 const L = (s, n) => {
-  const l = t(s.lang ?? ""), r = t(s.fallbacks ?? []), o = t({}), d = {};
+  const l = r(s.lang ?? ""), t = r(s.fallbacks ?? []), o = r({}), d = {};
   return i(n, o.value), {
     tLocales: (v) => {
-      const a = t({}), k = {};
-      return i(v, a.value), (f, ...p) => {
+      const a = r({}), p = {};
+      return i(v, a.value), (f, ...y) => {
         const c = {};
-        return [l.value, ...r.value].reverse().forEach((e) => {
+        return [l.value, ...t.value].reverse().forEach((e) => {
           Object.assign(c, o.value[e], a.value[e]);
-        }), (!a.value[l.value] || !(f in c)) && [l.value, ...r.value].some((e) => {
+        }), (!a.value[l.value] || !(f in c)) && [l.value, ...t.value].some((e) => {
           if (!a.value[e])
-            return b(
+            return m(
               (u) => {
-                a.value[e] = m(u);
+                a.value[e] = b(u);
               },
-              k,
+              p,
               e,
               v
             ), !0;
           if (!o.value[e])
-            return b(
+            return m(
               (u) => {
-                o.value[e] = m(u);
+                o.value[e] = b(u);
               },
               d,
               e,
               n
             ), !0;
-        }), y({ ...c }, f, ...p);
+        }), k({ ...c }, f, ...y);
       };
     },
     lang: l,
-    fallbacks: r
+    fallbacks: t
   };
-}, K = L;
+}, I = L;
 export {
   L as createI18n,
-  K as createI18nSafe
+  I as createI18nSafe,
+  S as yi
 };
